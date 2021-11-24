@@ -10,20 +10,6 @@ Vote.init({
         primaryKey: true,
         autoIncrement: true,
     },
-    // user_id:{
-    //     type:DataTypes.INTEGER,
-    //     references:{
-    //         model:'user',
-    //         key:'id'
-    //     }
-    // },
-    // place_id:{
-    //     type:DataTypes.INTEGER,
-    //     references:{
-    //         model:'place',
-    //         key:'id'
-    //     }
-    // },
     hasStipendUp: {
         type: DataTypes.BOOLEAN
     },
