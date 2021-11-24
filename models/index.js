@@ -27,14 +27,14 @@ Comment.hasMany(Reaction),{
     onDelete:"CASCADE"
 }
 
-Place.belongsToMany(User),{
+Place.belongsToMany(User,{
     through:Vote,
     foreignKey:'place_id'
-};
+});
 
-User.belongsToMany(Place),{
+User.belongsToMany(Place,{
     through:Vote,
     foreignKey:'user_id'
-};
+});
 
 module.exports= {User,Comment,Place,Vote, Reaction}
