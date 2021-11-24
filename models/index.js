@@ -9,19 +9,23 @@ Comment.belongsTo(User);
 Comment.belongsTo(Place);
 
 Place.hasMany(Comment, {
-    foreignKey:'PlaceId',
+    foreignKey:'place_id',
     onDelete:"CASCADE"
 });
 
-Comment.belongsToMany(User),{
-    through:Reaction,
-    foreignKey:'comment_id'
+Reaction.belongsTo(User);
+
+User.hasMany(Reaction),{
+    foreignKey:'user_id',
+    onDelete:"CASCADE"
 };
 
-User.belongsToMany(Comment),{
-    through:Reaction,
-    foreignKey:'user_id'
-};
+Reaction.belongsTo(Comment);
+
+Comment.hasMany(Reaction),{
+    foreignKey:"comment_id",
+    onDelete:"CASCADE"
+}
 
 Place.belongsToMany(User),{
     through:Vote,
