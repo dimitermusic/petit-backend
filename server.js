@@ -13,17 +13,17 @@ app.use(express.static("public"));
 
 // app.use(routes)
 
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { 
-        maxAge: 1000 * 60 * 60
-    },
-    store: new SequelizeStore({
-        db:sequelize
-    })
-}));
+// app.use(session({
+//     secret: process.env.SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { 
+//         maxAge: 1000 * 60 * 60
+//     },
+//     store: new SequelizeStore({
+//         db:sequelize
+//     })
+// }));
 
 sequelize.sync({force:false}).then(function(){
     app.listen(PORT,function(){
