@@ -4,12 +4,12 @@ const sequelize = require('../config/connection');
 class Place extends Model{}
 
 Place.init({
-    id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        primaryKey: true,
-        autoIncrement: true,
-    },
+    // id: {
+    //     type: DataTypes.INTEGER,
+    //     allowNull: false,
+    //     primaryKey: true,
+    //     autoIncrement: true,
+    // },
     name:{
         type:DataTypes.STRING,
         allowNull:false

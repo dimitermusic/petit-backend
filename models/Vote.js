@@ -4,26 +4,26 @@ const sequelize = require('../config/connection');
 class Vote extends Model {}
 
 Vote.init({
-    id:{
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        primaryKey: true,
-        autoIncrement: true,
-    },
-    user_id:{
-        type:DataTypes.INTEGER,
-        references:{
-            model:'user',
-            key:'id'
-        }
-    },
-    place_id:{
-        type:DataTypes.INTEGER,
-        references:{
-            model:'place',
-            key:'id'
-        }
-    },
+    // id:{
+    //     type: DataTypes.INTEGER,
+    //     allowNull: false,
+    //     primaryKey: true,
+    //     autoIncrement: true,
+    // },
+    // user_id:{
+    //     type:DataTypes.INTEGER,
+    //     references:{
+    //         model:'user',
+    //         key:'id'
+    //     }
+    // },
+    // place_id:{
+    //     type:DataTypes.INTEGER,
+    //     references:{
+    //         model:'place',
+    //         key:'id'
+    //     }
+    // },
     hasStipendUp:{
         type:DataTypes.BOOLEAN
     },
