@@ -9,32 +9,27 @@ Comment.belongsTo(User);
 Comment.belongsTo(Place);
 
 Place.hasMany(Comment, {
-    foreignKey:'place_id',
-    onDelete:"CASCADE"
+    onDelete: "CASCADE"
 });
 
 Reaction.belongsTo(User);
 
-User.hasMany(Reaction),{
-    foreignKey:'user_id',
-    onDelete:"CASCADE"
-};
+User.hasMany(Reaction, {
+    onDelete: "CASCADE"
+});
 
 Reaction.belongsTo(Comment);
 
-Comment.hasMany(Reaction),{
-    foreignKey:"comment_id",
-    onDelete:"CASCADE"
-}
-
-Place.belongsToMany(User,{
-    through:Vote,
-    foreignKey:'place_id'
+Comment.hasMany(Reaction, {
+    onDelete: "CASCADE"
 });
 
-User.belongsToMany(Place,{
-    through:Vote,
-    foreignKey:'user_id'
+Place.belongsToMany(User, {
+    through: Vote,
 });
 
-module.exports= {User,Comment,Place,Vote, Reaction}
+User.belongsToMany(Place, {
+    through: Vote,
+});
+
+module.exports = { User, Comment, Place, Vote, Reaction }

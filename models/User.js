@@ -1,8 +1,8 @@
-const {Model, DataTypes} = require('sequelize');
+const { Model, DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
 const sequelize = require('../config/connection');
 
-class User extends Model {}
+class User extends Model { }
 
 User.init({
     // id: {
@@ -11,35 +11,35 @@ User.init({
     //     primaryKey: true,
     //     autoIncrement: true,
     // },
-    username:{
+    username: {
         type: DataTypes.STRING,
-        allowNull:false
+        allowNull: false
     },
-    password:{
-        type:DataTypes.STRING,
-        allowNull:false,
-        validate:{
-            min:8
+    password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            min: 8
         }
     },
-    email:{
-        type:DataTypes.STRING,
-        allowNull:false,
-        validate:{
-            isEmail:true
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            isEmail: true
         }
     },
-    favoritePet:{
-        type:DataTypes.STRING
+    favoritePet: {
+        type: DataTypes.STRING
     },
-    petPic:{
-        type:DataTypes.TEXT
+    petPic: {
+        type: DataTypes.TEXT
     }
-},{
+}, {
     sequelize,
     hooks: {
-        beforeCreate: userObj=>{
-            userObj.password = bcrypt.hashSync(userObj.password,5);
+        beforeCreate: userObj => {
+            userObj.password = bcrypt.hashSync(userObj.password, 5);
             return userObj;
         }
     }
