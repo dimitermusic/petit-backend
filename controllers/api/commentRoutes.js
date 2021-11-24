@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-// const jwt = require("jsonwebtoken")
-// const tokenAuth = require("../../middleware/tokenAuth")
-const { Comment } = require("../../models");
+const tokenAuth = require("../../middleware/tokenAuth")
+const { Comment, User, Reaction, Place } = require("../../models");
 
+// delete this route after testing
 router.get("/", (req, res) => {
   Comment.findAll()
     .then(userData => {
@@ -15,13 +15,14 @@ router.get("/", (req, res) => {
     });
 });
 
-router.post("/", (req, res) => {
+router.post("/place/:id", tokenAuth, (req, res) => {
   Comment.create({
     comment: req.body.comment,
-    UserId: req.body.UserId
+    UserId: req.body.user.id,
+    PlaceId:req.params.id
   })
-    .then(newUser => {
-      res.json(newUser);
+    .then(newComment => {
+      res.json(newComment);
     })
     .catch(err => {
       console.log(err);
@@ -29,11 +30,10 @@ router.post("/", (req, res) => {
     });
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", tokenAuth, (req, res) => {
   Comment.update(
     {
       comment: req.body.comment,
-      UserId: req.body.UserId
     },
     {
       where: {
@@ -41,8 +41,8 @@ router.put("/:id", (req, res) => {
       }
     }
   )
-    .then(updatedUser => {
-      res.json(updatedUser);
+    .then(upComment => {
+      res.json(upComment);
     })
     .catch(err => {
       console.log(err);
@@ -50,16 +50,15 @@ router.put("/:id", (req, res) => {
     });
 });
 
-router.delete("/:id", (req, res) => {
-  Comment.findByPk(req.params.id).then(() => {
+router.delete("/:id", tokenAuth, (req, res) => {
     Comment.destroy({
       where: {
         id: req.params.id
       }
     })
-      .then(delUser => {
-        if (delUser) {
-          res.json(delUser);
+      .then(delComment => {
+        if (delComment) {
+          res.json(delComment);
         } else {
           res.status(404).json({ err: "no such user found!" });
         }
@@ -68,10 +67,6 @@ router.delete("/:id", (req, res) => {
         console.log(err);
         res.status(500).json({ err });
       });
-  }).catch(err => {
-    console.log(err);
-    res.status(500).json({ err });
-  });;
 });
 
 module.exports = router;
