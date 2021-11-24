@@ -1,15 +1,15 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
-class Vote extends Model {}
+class Vote extends Model { }
 
 Vote.init({
-    // id:{
-    //     type: DataTypes.INTEGER,
-    //     allowNull: false,
-    //     primaryKey: true,
-    //     autoIncrement: true,
-    // },
+    id:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
+    },
     // user_id:{
     //     type:DataTypes.INTEGER,
     //     references:{
@@ -24,25 +24,25 @@ Vote.init({
     //         key:'id'
     //     }
     // },
-    hasStipendUp:{
-        type:DataTypes.BOOLEAN
+    hasStipendUp: {
+        type: DataTypes.BOOLEAN
     },
-    hasStipendDown:{
-        type:DataTypes.BOOLEAN
+    hasStipendDown: {
+        type: DataTypes.BOOLEAN
     },
-    canBringUp:{
-        type:DataTypes.BOOLEAN
+    canBringUp: {
+        type: DataTypes.BOOLEAN
     },
-    canBringDown:{
-        type:DataTypes.BOOLEAN
-    },    
-    canMenuUp:{
-        type:DataTypes.BOOLEAN
-    },    
-    canMenuDown:{
-        type:DataTypes.BOOLEAN
+    canBringDown: {
+        type: DataTypes.BOOLEAN
     },
-},{
+    canMenuUp: {
+        type: DataTypes.BOOLEAN
+    },
+    canMenuDown: {
+        type: DataTypes.BOOLEAN
+    },
+}, {
     sequelize
 });
 

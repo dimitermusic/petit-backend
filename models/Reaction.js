@@ -1,7 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
-class Reaction extends Model {}
+class Reaction extends Model { }
 
 Reaction.init({
     // id:{
@@ -24,16 +24,16 @@ Reaction.init({
     //         key:'id'
     //     }
     // },
-    like:{
-        type:DataTypes.BOOLEAN
+    like: {
+        type: DataTypes.BOOLEAN
     },
-    heart:{
-        type:DataTypes.BOOLEAN
+    heart: {
+        type: DataTypes.BOOLEAN
     },
-    disapproval:{
-        type:DataTypes.BOOLEAN
+    disapproval: {
+        type: DataTypes.BOOLEAN
     }
-},{
+}, {
     sequelize
 });
 
