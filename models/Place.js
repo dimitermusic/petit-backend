@@ -9,9 +9,8 @@ Place.init({
         allowNull: false
     },
     isJob: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
+        type: DataTypes.STRING,
+        allowNull: false
     },
     location: {
         type: DataTypes.STRING,
