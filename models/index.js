@@ -32,4 +32,4 @@ User.belongsToMany(Place, {
     through: Vote,
 });
 
-module.exports = { User, Comment, Place, Vote, Reaction }
+module.exports = { User, Comment, Place, Vote, Reaction };
