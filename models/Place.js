@@ -9,7 +9,7 @@ Place.init({
         allowNull: false
     },
     isJob: {
-        type: DataTypes.STRING,
+        type: DataTypes.BOOLEAN,
         allowNull: false
     },
     location: {
@@ -19,10 +19,7 @@ Place.init({
     ref_id: {
         type: DataTypes.STRING,
         allowNull: false
-    },
-    website: {
-        type: DataTypes.STRING
-    },
+    }
 }, {
     sequelize
 })

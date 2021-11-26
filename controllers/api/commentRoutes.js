@@ -61,7 +61,7 @@ router.delete("/:id", (req, res) => {
         if (delUser) {
           res.json(delUser);
         } else {
-          res.status(404).json({ err: "no such user found!" });
+          res.status(404).json({ err: "no such comment found!" });
         }
       })
       .catch(err => {
