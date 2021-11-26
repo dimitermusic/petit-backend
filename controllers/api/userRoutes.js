@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
-// const jwt = require("jsonwebtoken")
-// const tokenAuth = require("../../middleware/tokenAuth")
-const { User, Reaction, Vote } = require("../../models");
+const jwt = require("jsonwebtoken")
+const tokenAuth = require("../../middleware/tokenAuth")
+const { User, Reaction, Vote, Place } = require("../../models");
 
+// probably get rid of this route after testing
 router.get("/", (req, res) => {
   User.findAll()
     .then(userData => {
@@ -44,7 +45,7 @@ router.post('/login', (req, res) => {
     }
     else if (bcrypt.compareSync(req.body.password, foundUser.password)) {
       const token = jwt.sign({
-        email: foundUser.email,
+        username: foundUser.username,
         id: foundUser.id
       },
         process.env.JWT_SECRET
@@ -66,7 +67,7 @@ router.post('/login', (req, res) => {
     });
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", tokenAuth, (req, res) => {
   User.update(
     {
       email: req.body.email,
@@ -90,8 +91,7 @@ router.put("/:id", (req, res) => {
     });
 });
 
-router.delete("/:id", (req, res) => {
-  User.findByPk(req.params.id).then(() => {
+router.delete("/:id", tokenAuth, (req, res) => {
     User.destroy({
       where: {
         id: req.params.id
@@ -108,15 +108,11 @@ router.delete("/:id", (req, res) => {
         console.log(err);
         res.status(500).json({ err });
       });
-  }).catch(err => {
-    console.log(err);
-    res.status(500).json({ err });
-  });;
 });
 
-router.get("/profile", (req, res) => {
+router.get("/profile", tokenAuth, (req, res) => {
   User.findByPk(req.user.id, {
-    include: [Reaction, Vote]
+    include: [Reaction, Vote, Place]
   })
     .then(foundUser => {
       res.json(foundUser)

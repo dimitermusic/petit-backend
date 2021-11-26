@@ -1,14 +1,14 @@
 const express = require('express');
 const sequelize = require('./config/connection');
 const routes = require('./controllers')
-// const cors = require('cors')
+const cors = require('cors')
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 const { User, Place, Comment, Vote, Reaction } = require("./models");
 
-// app.use(cors());
+app.use(cors());
 // TODO: upon deployment:
 // app.use(cors({
     // origin:["INSERT HEROKU WEBSITE URL HERE"]

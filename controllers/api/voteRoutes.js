@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 // const jwt = require("jsonwebtoken")
 // const tokenAuth = require("../../middleware/tokenAuth")
-const { Vote } = require("../../models");
+const { Vote, Place, User } = require("../../models");
 
 router.get("/", (req, res) => {
     Vote.findAll()
@@ -25,7 +25,10 @@ router.post("/", (req, res) => {
         hasMenuDown: req.body.hasMenuDown,
         petTimeOffUp: req.body.petTimeOffUp,
         petTimeOffDown: req.body.petTimeOffDown
-    })
+    },
+        {
+            include: [Place, User]
+        })
         .then(newUser => {
             res.json(newUser);
         })
@@ -46,6 +49,9 @@ router.put("/:id", (req, res) => {
             hasMenuDown: req.body.hasMenuDown,
             petTimeOffUp: req.body.petTimeOffUp,
             petTimeOffDown: req.body.petTimeOffDown
+        },
+        {
+            include: [Place, User]
         },
         {
             where: {

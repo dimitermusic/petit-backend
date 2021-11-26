@@ -1,81 +1,46 @@
-const express = require("express");
-const router = express.Router();
-// const jwt = require("jsonwebtoken")
-// const tokenAuth = require("../../middleware/tokenAuth")
-const { Place } = require("../../models");
+const router = require('express').Router();
+const tokenAuth = require('../../middleware/tokenAuth');
+const { Place, Vote, Comment, User } = require('../../models');
 
-router.get("/", (req, res) => {
+router.get('/', (req, res) => {
   Place.findAll()
-    .then(userData => {
-      res.json(userData);
+    .then(placeData => {
+      res.json(placeData);
     })
     .catch(err => {
       console.log(err);
-      res.status(500).json({ err });
-    });
-});
-
-router.post("/", (req, res) => {
-  Place.create({
-    name: req.body.name,
-    isJob: req.body.isJob,
-    location: req.body.location,
-    ref_id: req.body.ref_id
-  })
-    .then(newUser => {
-      res.json(newUser);
+      res.status(500).json({ err })
     })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({ err });
-    });
 });
 
-router.put("/:id", (req, res) => {
-  Place.update(
-    {
-      name: req.body.name,
-      isJob: req.body.isJob,
-      location: req.body.location,
-      ref_id: req.body.ref_id
-    },
-    {
-      where: {
-        id: req.params.id
-      }
+router.get("/:ref_id", (req, res) => {
+  Place.findOne({
+    where: {
+      ref_id: req.params.ref_id,
+      isJob: req.body.isJob
     }
-  )
-    .then(updatedUser => {
-      res.json(updatedUser);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({ err: err });
-    });
-});
-
-router.delete("/:id", (req, res) => {
-  Place.findByPk(req.params.id).then(() => {
-    Place.destroy({
-      where: {
-        id: req.params.id
-      }
-    })
-      .then(delUser => {
-        if (delUser) {
-          res.json(delUser);
-        } else {
-          res.status(404).json({ err: "no such place found!" });
-        }
-      })
-      .catch(err => {
+  }, {
+    include: [Comment, Vote, User]
+  }).then(placeData => {
+    if (!placeData) {
+      Place.create({
+        name: req.body.name,
+        isJob: req.body.isJob,
+        location: req.body.location,
+        ref_id: req.params.ref_id,
+        website: req.body.website
+      }).then(newPlace => {
+        res.json(newPlace)
+      }).catch(err => {
         console.log(err);
-        res.status(500).json({ err });
-      });
+      })
+    } else {
+      res.json(placeData);
+    };
   }).catch(err => {
+    res.statusMessage("404").json('unable to get info');
     console.log(err);
-    res.status(500).json({ err });
-  });;
+  })
 });
 
 module.exports = router;
