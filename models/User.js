@@ -28,6 +28,9 @@ User.init({
     },
     petPic: {
         type: DataTypes.TEXT
+    },
+    profilePic:{
+        type:DataTypes.TEXT
     }
 }, {
     sequelize,
