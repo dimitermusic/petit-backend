@@ -39,12 +39,10 @@ router.put("/:id", tokenAuth, (req, res) => {
       comment: req.body.comment,
     },
     {
-      include: [User, Place, Reaction]
-    },
-    {
-      where: {
-        id: req.params.id
-      }
+        where: {
+            id: req.params.id
+        },
+        include: [User, Place, Reaction]
     })
     .then(upComment => {
       res.json(upComment);
