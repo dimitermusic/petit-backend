@@ -19,8 +19,11 @@ router.post("/place/:id", tokenAuth, (req, res) => {
   Comment.create({
     comment: req.body.comment,
     UserId: req.body.user.id,
-    PlaceId:req.params.id
-  })
+    PlaceId: req.params.id
+  },
+    {
+      include: [User, Place, Reaction]
+    })
     .then(newComment => {
       res.json(newComment);
     })
@@ -36,11 +39,13 @@ router.put("/:id", tokenAuth, (req, res) => {
       comment: req.body.comment,
     },
     {
+      include: [User, Place, Reaction]
+    },
+    {
       where: {
         id: req.params.id
       }
-    }
-  )
+    })
     .then(upComment => {
       res.json(upComment);
     })
@@ -51,22 +56,22 @@ router.put("/:id", tokenAuth, (req, res) => {
 });
 
 router.delete("/:id", tokenAuth, (req, res) => {
-    Comment.destroy({
-      where: {
-        id: req.params.id
+  Comment.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+    .then(delComment => {
+      if (delComment) {
+        res.json(delComment);
+      } else {
+        res.status(404).json({ err: "no such comment found!" });
       }
     })
-      .then(delComment => {
-        if (delComment) {
-          res.json(delComment);
-        } else {
-          res.status(404).json({ err: "no such user found!" });
-        }
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(500).json({ err });
-      });
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ err });
+    });
 });
 
 module.exports = router;

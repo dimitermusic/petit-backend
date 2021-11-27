@@ -19,10 +19,7 @@ Place.init({
     ref_id: {
         type: DataTypes.STRING,
         allowNull: false
-    },
-    website: {
-        type: DataTypes.STRING
-    },
+    }
 }, {
     sequelize
 })

@@ -8,10 +8,10 @@ const voteRoutes = require("./voteRoutes");
 
 
 router.use("/comments", commentRoutes);
-// router.use("/places", placeRoutes);
-// router.use("/reactions", reactionRoutes);
+router.use("/places", placeRoutes);
+router.use("/reactions", reactionRoutes);
 router.use("/users", userRoutes);
-// router.use("/votes", voteRoutes);
+router.use("/votes", voteRoutes);
 router.get("/",(req,res)=>{
     res.send("Pet me 🐶")
 })

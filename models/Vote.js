@@ -4,12 +4,6 @@ const sequelize = require('../config/connection');
 class Vote extends Model { }
 
 Vote.init({
-    id:{
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        primaryKey: true,
-        autoIncrement: true,
-    },
     hasStipendUp: {
         type: DataTypes.BOOLEAN
     },
@@ -22,10 +16,16 @@ Vote.init({
     canBringDown: {
         type: DataTypes.BOOLEAN
     },
-    canMenuUp: {
+    hasMenuUp: {
         type: DataTypes.BOOLEAN
     },
-    canMenuDown: {
+    hasMenuDown: {
+        type: DataTypes.BOOLEAN
+    },
+    petTimeOffUp: {
+        type: DataTypes.BOOLEAN
+    },
+    petTimeOffDown: {
         type: DataTypes.BOOLEAN
     },
 }, {
