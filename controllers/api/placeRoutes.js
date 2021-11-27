@@ -18,10 +18,10 @@ router.get("/:ref_id", (req, res) => {
     where: {
       ref_id: req.params.ref_id,
       isJob: req.body.isJob
-    }
-  }, {
-    include: [Comment, Vote, User]
-  }).then(placeData => {
+    },
+    include: [Comment, User, Vote]
+  })
+  .then(placeData => {
     if (!placeData) {
       Place.create({
         name: req.body.name,
