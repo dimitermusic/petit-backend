@@ -1,13 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const tokenAuth = require("../../middleware/tokenAuth")
-const { Reaction } = require("../../models");
+const { Reaction, User } = require("../../models");
+const { update } = require("../../models/Vote");
 
 // delete after testing
 router.get("/", (req, res) => {
-    Reaction.findAll()
-        .then(userData => {
-            res.json(userData);
+    Reaction.findAll({include:User})
+        .then(reactData => {
+            res.json(reactData);
         })
         .catch(err => {
             console.log(err);
@@ -15,11 +16,14 @@ router.get("/", (req, res) => {
         });
 });
 
-router.post("/", tokenAuth, (req, res) => {
+// creates a reaction for the correct comment and user info
+router.post("/:id", tokenAuth, (req, res) => {
     Reaction.create({
         like: req.body.like,
         heart: req.body.heart,
-        disapproval: req.body.disapproval
+        disapproval: req.body.disapproval,
+        UserId:req.user.id,
+        CommentId:req.params.id
     })
         .then(newReact => {
             res.json(newReact);
@@ -30,28 +34,32 @@ router.post("/", tokenAuth, (req, res) => {
         });
 });
 
+// allows user to update 
 router.put("/:id", tokenAuth, (req, res) => {
-    Reaction.update(
-        {
-            like: req.body.like,
-            heart: req.body.heart,
-            disapproval: req.body.disapproval
-        },
-        {
-            where: {
-                id: req.params.id
+    if(req.user.id===req.params.id){
+        Reaction.update(
+            {
+                like: req.body.like,
+                heart: req.body.heart,
+                disapproval: req.body.disapproval
+            },
+            {
+                where: {
+                    id: req.params.id
+                }
             }
-        }
-    )
-        .then(updatedUser => {
-            res.json(updatedUser);
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({ err: err });
+        ).then(updatedReact => {
+                res.json(updatedReact);
+        }).catch(err => {
+                console.log(err);
+                res.status(500).json({ err: err });
         });
+    }else{
+        res.json(403).json("this isn't your reaction!")
+    }
 });
 
+// let's user delete reaction... maybe get rid of later?
 router.delete("/:id", tokenAuth, (req, res) => {
     Reaction.findByPk(req.params.id).then(() => {
         Reaction.destroy({

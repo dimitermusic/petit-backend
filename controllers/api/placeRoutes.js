@@ -2,8 +2,9 @@ const router = require('express').Router();
 const tokenAuth = require('../../middleware/tokenAuth');
 const { Place, Vote, Comment, User } = require('../../models');
 
+// find all the places that exist within our database
 router.get('/', (req, res) => {
-  Place.findAll()
+  Place.findAll({include:[Comment, User]})
     .then(placeData => {
       res.json(placeData);
     })
@@ -13,6 +14,7 @@ router.get('/', (req, res) => {
     })
 });
 
+// get info for one specific place based on the ref_id from Google API. Will either create new entry or return back with info already in database depending
 router.get("/:ref_id", tokenAuth, (req, res) => {
   Place.findOne({
     where: {

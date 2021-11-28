@@ -38,6 +38,7 @@ router.get("/", (req, res) => {
 //         });
 // });
 
+// user will be able to vote via this route
 router.put("/:id", tokenAuth, (req, res) => {
     Vote.update(
         {
