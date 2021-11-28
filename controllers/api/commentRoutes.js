@@ -5,7 +5,7 @@ const { Comment, User, Reaction, Place } = require("../../models");
 
 // delete this route after testing
 router.get("/", (req, res) => {
-  Comment.findAll()
+  Comment.findAll({include:[User,Reaction,Place]})
     .then(userData => {
       res.json(userData);
     })
@@ -15,16 +15,13 @@ router.get("/", (req, res) => {
     });
 });
 
+// post a comment on a specific place 
 router.post("/place/:id", tokenAuth, (req, res) => {
   Comment.create({
     comment: req.body.comment,
-    UserId: req.body.user.id,
+    UserId: req.user.id,
     PlaceId: req.params.id
-  },
-    {
-      include: [User, Place, Reaction]
-    })
-    .then(newComment => {
+  }).then(newComment => {
       res.json(newComment);
     })
     .catch(err => {
@@ -33,18 +30,16 @@ router.post("/place/:id", tokenAuth, (req, res) => {
     });
 });
 
+// comment is editable for user
 router.put("/:id", tokenAuth, (req, res) => {
   Comment.update(
     {
       comment: req.body.comment,
     },
     {
-      include: [User, Place, Reaction]
-    },
-    {
-      where: {
-        id: req.params.id
-      }
+        where: {
+            id: req.params.id
+        }
     })
     .then(upComment => {
       res.json(upComment);
@@ -55,6 +50,7 @@ router.put("/:id", tokenAuth, (req, res) => {
     });
 });
 
+// user can delete comment
 router.delete("/:id", tokenAuth, (req, res) => {
   Comment.destroy({
     where: {
