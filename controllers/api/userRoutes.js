@@ -22,8 +22,8 @@ router.post("/signup", (req, res) => {
     email: req.body.email,
     password: req.body.password,
     username: req.body.username,
-    favoritePet: req.body.favoritePet,
-    petPic: req.body.petPic
+    // favoritePet: req.body.favoritePet,
+    // petPic: req.body.petPic
   })
     .then(newUser => {
       res.json(newUser);
