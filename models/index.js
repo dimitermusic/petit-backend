@@ -28,8 +28,12 @@ Place.belongsToMany(User, {
     through: Vote,
 });
 
+Vote.belongsTo(Place);
+
 User.belongsToMany(Place, {
     through: Vote,
 });
+
+Vote.belongsTo(User)
 
 module.exports = { User, Comment, Place, Vote, Reaction };

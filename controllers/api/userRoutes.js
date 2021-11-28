@@ -17,13 +17,16 @@ router.get("/", (req, res) => {
     });
 });
 
+// allows user to signup, but currently must still login
+// TODO: make it so that signup also logs user in 
 router.post("/signup", (req, res) => {
   User.create({
     email: req.body.email,
     password: req.body.password,
     username: req.body.username,
     favoritePet: req.body.favoritePet,
-    petPic: req.body.petPic
+    petPic: req.body.petPic,
+    profilePic:req.body.profilePic
   })
     .then(newUser => {
       res.json(newUser);
@@ -34,6 +37,7 @@ router.post("/signup", (req, res) => {
     });
 });
 
+// login user route
 router.post('/login', (req, res) => {
   User.findOne({
     where: {
@@ -67,6 +71,7 @@ router.post('/login', (req, res) => {
     });
 });
 
+// allows user to change personal settings
 router.put("/:id", tokenAuth, (req, res) => {
   User.update(
     {
@@ -74,7 +79,8 @@ router.put("/:id", tokenAuth, (req, res) => {
       password: req.body.password,
       username: req.body.username,
       favoritePet: req.body.favoritePet,
-      petPic: req.body.petPic
+      petPic: req.body.petPic,
+      profilePic:req.body.profilePic
     },
     {
       where: {
@@ -91,6 +97,7 @@ router.put("/:id", tokenAuth, (req, res) => {
     });
 });
 
+// delete user's account
 router.delete("/:id", tokenAuth, (req, res) => {
     User.destroy({
       where: {
@@ -110,6 +117,7 @@ router.delete("/:id", tokenAuth, (req, res) => {
       });
 });
 
+// get user's profile info
 router.get("/profile", tokenAuth, (req, res) => {
   User.findByPk(req.user.id, {
     include: [Reaction, Vote, Place]
