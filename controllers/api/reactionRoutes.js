@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-// const jwt = require("jsonwebtoken")
-// const tokenAuth = require("../../middleware/tokenAuth")
+const tokenAuth = require("../../middleware/tokenAuth")
 const { Reaction } = require("../../models");
 
+// delete after testing
 router.get("/", (req, res) => {
     Reaction.findAll()
         .then(userData => {
@@ -15,14 +15,14 @@ router.get("/", (req, res) => {
         });
 });
 
-router.post("/", (req, res) => {
+router.post("/", tokenAuth, (req, res) => {
     Reaction.create({
         like: req.body.like,
         heart: req.body.heart,
         disapproval: req.body.disapproval
     })
-        .then(newUser => {
-            res.json(newUser);
+        .then(newReact => {
+            res.json(newReact);
         })
         .catch(err => {
             console.log(err);
@@ -30,7 +30,7 @@ router.post("/", (req, res) => {
         });
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", tokenAuth, (req, res) => {
     Reaction.update(
         {
             like: req.body.like,
@@ -52,16 +52,16 @@ router.put("/:id", (req, res) => {
         });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", tokenAuth, (req, res) => {
     Reaction.findByPk(req.params.id).then(() => {
         Reaction.destroy({
             where: {
                 id: req.params.id
             }
         })
-            .then(delUser => {
-                if (delUser) {
-                    res.json(delUser);
+            .then(delReact => {
+                if (delReact) {
+                    res.json(delReact);
                 } else {
                     res.status(404).json({ err: "no such reaction found!" });
                 }

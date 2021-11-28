@@ -13,13 +13,13 @@ router.get('/', (req, res) => {
     })
 });
 
-router.get("/:ref_id", (req, res) => {
+router.get("/:ref_id", tokenAuth, (req, res) => {
   Place.findOne({
     where: {
       ref_id: req.params.ref_id,
       isJob: req.body.isJob
     },
-    include: [Comment, User, Vote]
+    include: [Comment, User]
   })
   .then(placeData => {
     if (!placeData) {
@@ -30,7 +30,15 @@ router.get("/:ref_id", (req, res) => {
         ref_id: req.params.ref_id,
         website: req.body.website
       }).then(newPlace => {
-        res.json(newPlace)
+        Vote.create({
+            PlaceId: newPlace.id,
+            UserId: req.user.id            
+        }).then(voteData => {
+            res.json(voteData)
+        }).catch(err=>{
+            console.log(err);
+            res.status(404).json('no vote created')
+        })
       }).catch(err => {
         console.log(err);
       })
@@ -38,9 +46,34 @@ router.get("/:ref_id", (req, res) => {
       res.json(placeData);
     };
   }).catch(err => {
-    res.statusMessage("404").json('unable to get info');
+    res.status(404).json('unable to get info');
     console.log(err);
   })
 });
+
+// FOR TESTING PURPOSES ONLY
+router.post("/", tokenAuth,(req,res) =>{
+    Place.create({
+        name: req.body.name,
+        isJob: req.body.isJob,
+        location: req.body.location,
+        website: req.body.website,
+        ref_id:req.body.ref_id
+    }).then(myPlace => {
+        res.json(myPlace)
+        Vote.create({
+            PlaceId: myPlace.id,
+            UserId: req.user.id            
+        }).then(voteData => {
+            res.json(voteData)
+        }).catch(err=>{
+            console.log(err);
+            res.status(404).json('no vote created')
+        })
+    }).catch(err => {
+        console.log(err);
+        res.status(403).json("bad request")
+    })
+})
 
 module.exports = router;
