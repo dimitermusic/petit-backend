@@ -53,7 +53,7 @@ router.get("/:ref_id", tokenAuth, (req, res) => {
   })
 });
 
-// FOR TESTING PURPOSES ONLY
+// FOR TESTING PURPOSES ONLY!! DELETE AFTER TESTING
 router.post("/", tokenAuth,(req,res) =>{
     Place.create({
         name: req.body.name,
