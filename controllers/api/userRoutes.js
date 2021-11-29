@@ -24,9 +24,8 @@ router.post("/signup", (req, res) => {
     email: req.body.email,
     password: req.body.password,
     username: req.body.username,
-    favoritePet: req.body.favoritePet,
-    petPic: req.body.petPic,
-    profilePic:req.body.profilePic
+    // favoritePet: req.body.favoritePet,
+    // petPic: req.body.petPic
   })
     .then(newUser => {
       res.json(newUser);
@@ -45,7 +44,7 @@ router.post('/login', (req, res) => {
     }
   }).then(foundUser => {
     if (!foundUser) {
-      res.status(401).send("incorrect email or password")
+      return res.status(401).send("incorrect email or password")
     }
     else if (bcrypt.compareSync(req.body.password, foundUser.password)) {
       const token = jwt.sign({
@@ -119,9 +118,7 @@ router.delete("/:id", tokenAuth, (req, res) => {
 
 // get user's profile info
 router.get("/profile", tokenAuth, (req, res) => {
-  User.findByPk(req.user.id, {
-    include: [Reaction, Vote, Place]
-  })
+  User.findByPk(req.user.id, {})
     .then(foundUser => {
       res.json(foundUser)
     })
