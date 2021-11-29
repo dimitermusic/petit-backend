@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/dimitermusic/petit-backend#readme",
   "dependencies": {
+    "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
     "cloudinary": "^1.27.1",
     "connect-session-sequelize": "^7.1.2",
@@ -28,6 +29,8 @@
     "express-session": "^1.17.2",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
+    "node": "^17.1.0",
+    "nodejs": "0.0.0",
     "sequelize": "^6.12.0-alpha.1"
   }
 }

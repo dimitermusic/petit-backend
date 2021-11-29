@@ -24,14 +24,14 @@ Comment.hasMany(Reaction, {
     onDelete: "CASCADE"
 });
 
-Place.belongsToMany(User, {
-    through: Vote,
+Place.hasMany(Vote,{
+    onDelete:"CASCADE"
 });
 
 Vote.belongsTo(Place);
 
-User.belongsToMany(Place, {
-    through: Vote,
+User.hasMany(Vote, {
+    onDelete:"CASCADE"
 });
 
 Vote.belongsTo(User)
