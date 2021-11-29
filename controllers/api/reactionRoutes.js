@@ -36,27 +36,31 @@ router.post("/:id", tokenAuth, (req, res) => {
 
 // allows user to update 
 router.put("/:id", tokenAuth, (req, res) => {
-    if(req.user.id===req.params.id){
-        Reaction.update(
-            {
-                like: req.body.like,
-                heart: req.body.heart,
-                disapproval: req.body.disapproval
-            },
-            {
-                where: {
-                    id: req.params.id
+    Reaction.findByPk(req.params.id)
+    .then((data)=>{
+        if(req.user.id===data.UserId){
+            Reaction.update(
+                {
+                    like: req.body.like,
+                    heart: req.body.heart,
+                    disapproval: req.body.disapproval
+                },
+                {
+                    where: {
+                        id: req.params.id
+                    }
                 }
-            }
-        ).then(updatedReact => {
-                res.json(updatedReact);
-        }).catch(err => {
-                console.log(err);
-                res.status(500).json({ err: err });
-        });
-    }else{
-        res.json(403).json("this isn't your reaction!")
-    }
+            ).then(updatedReact => {
+                    res.json(updatedReact);
+            }).catch(err => {
+                    console.log(err);
+                    res.status(500).json({ err: err });
+            });
+        }else{
+            res.json(403).json("this isn't your reaction!")
+        }
+
+    })
 });
 
 // let's user delete reaction... maybe get rid of later?
