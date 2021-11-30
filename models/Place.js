@@ -12,10 +12,6 @@ Place.init({
         type: DataTypes.STRING,
         allowNull: false
     },
-    location: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
     ref_id: {
         type: DataTypes.STRING,
         allowNull: false
