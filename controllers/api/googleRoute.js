@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const tokenAuth = require("../../middleware/tokenAuth");
-const axios = require("axios")
+const axios = require("axios");
 
-router.get("/", tokenAuth, (req, res) => {
-    return axios.get(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${req.body.name}%20in%20${req.body.city}&key=${process.env.API_KEY}`)
+router.get("/", (req, res) => {
+    return axios.get(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${req.query.name}%20in%20${req.query.city}&key=${process.env.API_KEY}`)
       .then(function (response) {
+        console.log(response.data.results);
         res.json(response.data.results);
       })
       .catch(err => {
