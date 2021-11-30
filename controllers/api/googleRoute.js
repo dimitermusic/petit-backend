@@ -6,7 +6,6 @@ const axios = require("axios");
 router.get("/", (req, res) => {
     return axios.get(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${req.query.name}%20in%20${req.query.city}&key=${process.env.API_KEY}`)
       .then(function (response) {
-        console.log(response.data.results);
         res.json(response.data.results);
       })
       .catch(err => {
