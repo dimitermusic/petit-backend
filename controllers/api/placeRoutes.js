@@ -1,10 +1,10 @@
 const router = require('express').Router();
 const tokenAuth = require('../../middleware/tokenAuth');
-const { Place, Vote, Comment, User } = require('../../models');
+const { Place, Vote, Comment } = require('../../models');
 
 // find all the places that exist within our database
 router.get('/', (req, res) => {
-  Place.findAll({include:[Comment, User]})
+  Place.findAll({include:[Comment]})
     .then(placeData => {
       res.json(placeData);
     })
@@ -21,16 +21,14 @@ router.get("/:ref_id", tokenAuth, (req, res) => {
       ref_id: req.params.ref_id,
       isJob: req.body.isJob
     },
-    include: [Comment, User]
+    include: [Comment]
   })
   .then(placeData => {
     if (!placeData) {
       Place.create({
         name: req.body.name,
         isJob: req.body.isJob,
-        location: req.body.location,
         ref_id: req.params.ref_id,
-        website: req.body.website
       }).then(newPlace => {
         Vote.create({
             PlaceId: newPlace.id,
@@ -58,8 +56,6 @@ router.post("/", tokenAuth,(req,res) =>{
     Place.create({
         name: req.body.name,
         isJob: req.body.isJob,
-        location: req.body.location,
-        website: req.body.website,
         ref_id:req.body.ref_id
     }).then(myPlace => {
         res.json(myPlace)
