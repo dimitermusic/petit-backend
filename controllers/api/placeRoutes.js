@@ -29,6 +29,7 @@ router.get("/:ref_id", tokenAuth, (req, res) => {
         name: req.body.name,
         isJob: req.body.isJob,
         ref_id: req.params.ref_id,
+        address: req.body.address
       }).then(newPlace => {
         Vote.create({
             PlaceId: newPlace.id,
@@ -56,7 +57,8 @@ router.post("/", tokenAuth,(req,res) =>{
     Place.create({
         name: req.body.name,
         isJob: req.body.isJob,
-        ref_id:req.body.ref_id
+        ref_id:req.body.ref_id,
+        address:req.body.address
     }).then(myPlace => {
         res.json(myPlace)
         Vote.create({

@@ -8,6 +8,10 @@ Place.init({
         type: DataTypes.STRING,
         allowNull: false
     },
+    address:{
+        type: DataTypes.STRING,
+        allowNull:false
+    },
     isJob: {
         type: DataTypes.STRING,
         allowNull: false
