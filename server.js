@@ -7,11 +7,11 @@ const PORT = process.env.PORT || 3001;
 const { cloudinary } = require('./utils/cloudinary');
 const { User, Place, Comment, Vote, Reaction } = require("./models");
 
-// app.use(cors());
+app.use(cors());
 // TODO: upon deployment:
-app.use(cors({
-    origin:["https://petit-petfriendly.herokuapp.com/"]
-}));
+// app.use(cors({
+//     origin:["https://petit-petfriendly.herokuapp.com/"]
+// }));
 
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
