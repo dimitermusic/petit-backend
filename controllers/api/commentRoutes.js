@@ -15,6 +15,18 @@ router.get("/", (req, res) => {
     });
 });
 
+router.get("/:id", (req,res)=>{
+  Comment.findAll({
+    where:{
+      UserId:req.params.id
+    }
+  }).then(commentData => {
+    res.json(commentData)
+  }).catch(err=>{
+    console.log(err);
+  })
+})
+
 // post a comment on a specific place 
 router.post("/place/:id", tokenAuth, (req, res) => {
   Comment.create({
