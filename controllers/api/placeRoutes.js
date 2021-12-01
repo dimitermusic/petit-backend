@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const tokenAuth = require('../../middleware/tokenAuth');
-const { Place, Vote, Comment } = require('../../models');
+const { Place, Vote, Comment, Reaction } = require('../../models');
 
 // find all the places that exist within our database
 router.get('/', (req, res) => {
@@ -29,6 +29,7 @@ router.get("/:ref_id", tokenAuth, (req, res) => {
         name: req.body.name,
         isJob: req.body.isJob,
         ref_id: req.params.ref_id,
+        location: req.body.location
       }).then(newPlace => {
         Vote.create({
             PlaceId: newPlace.id,
@@ -56,7 +57,8 @@ router.post("/", tokenAuth,(req,res) =>{
     Place.create({
         name: req.body.name,
         isJob: req.body.isJob,
-        ref_id:req.body.ref_id
+        ref_id:req.body.ref_id,
+        location:req.body.location
     }).then(myPlace => {
         res.json(myPlace)
         Vote.create({
