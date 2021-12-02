@@ -10,7 +10,7 @@ const { User, Place, Comment, Vote, Reaction } = require("./models");
 app.use(cors());
 // TODO: upon deployment:
 // app.use(cors({
-    // origin:["INSERT HEROKU WEBSITE URL HERE"]
+//     origin:["https://petit-petfriendly.herokuapp.com/"]
 // }));
 
 app.use(express.urlencoded({extended:true}));

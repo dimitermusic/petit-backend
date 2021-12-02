@@ -15,13 +15,13 @@ router.get('/', (req, res) => {
 });
 
 // get info for one specific place based on the ref_id from Google API. Will either create new entry or return back with info already in database depending
-router.get("/:ref_id", tokenAuth, (req, res) => {
+router.post("/:ref_id", tokenAuth, (req, res) => {
   Place.findOne({
     where: {
       ref_id: req.params.ref_id,
       isJob: req.body.isJob
     },
-    include: [Comment]
+    include: [Comment, Vote]
   })
   .then(placeData => {
     if (!placeData) {
@@ -35,7 +35,11 @@ router.get("/:ref_id", tokenAuth, (req, res) => {
             PlaceId: newPlace.id,
             UserId: req.user.id            
         }).then(voteData => {
-            res.json(voteData)
+            console.log(voteData);
+            Place.findByPk(voteData.PlaceId, {include:[Comment,Vote]})
+            .then(myPlace=>{
+              res.json(myPlace)
+            })
         }).catch(err=>{
             console.log(err);
             res.status(404).json('no vote created')
