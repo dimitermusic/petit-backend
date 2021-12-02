@@ -3,9 +3,8 @@ const router = express.Router();
 const tokenAuth = require("../../middleware/tokenAuth")
 const { Vote, Place, User } = require("../../models");
 
-// delete after testing
-router.get("/", (req, res) => {
-    Vote.findAll()
+router.get("/", tokenAuth, (req, res) => {
+    Vote.findAll({where:{UserId:req.user.id}})
         .then(userData => {
             res.json(userData);
         })
@@ -16,7 +15,7 @@ router.get("/", (req, res) => {
 });
 
 // user will be able to vote via this route
-router.put("/:id", tokenAuth, (req, res) => {
+router.post("/", tokenAuth, (req, res) => {
     Vote.findOne({
         where:{
             UserId:req.user.id,
@@ -26,7 +25,7 @@ router.put("/:id", tokenAuth, (req, res) => {
     .then(voteData => {
         if(!voteData){
             Vote.create({
-                asStipendUp: req.body.hasStipendUp,
+                hasStipendUp: req.body.hasStipendUp,
                 hasStipendDown: req.body.hasStipendDown,
                 canBringUp: req.body.canBringUp,
                 canBringDown: req.body.canBringDown,
@@ -40,23 +39,16 @@ router.put("/:id", tokenAuth, (req, res) => {
                 console.log(err);
             })
         }else{
-            Vote.update(
-                {
-                    hasStipendUp: req.body.hasStipendUp,
-                    hasStipendDown: req.body.hasStipendDown,
-                    canBringUp: req.body.canBringUp,
-                    canBringDown: req.body.canBringDown,
-                    hasMenuUp: req.body.hasMenuUp,
-                    hasMenuDown: req.body.hasMenuDown,
-                    petTimeOffUp: req.body.petTimeOffUp,
-                    petTimeOffDown: req.body.petTimeOffDown
-                },
-                {
-                    where: {
-                        id: req.params.id
-                    }
-                }
-            )
+            Vote.update({
+                hasStipendUp: req.body.hasStipendUp,
+                hasStipendDown: req.body.hasStipendDown,
+                canBringUp: req.body.canBringUp,
+                canBringDown: req.body.canBringDown,
+                hasMenuUp: req.body.hasMenuUp,
+                hasMenuDown: req.body.hasMenuDown,
+                petTimeOffUp: req.body.petTimeOffUp,
+                petTimeOffDown: req.body.petTimeOffDown
+            })
             .then(updatedVote => {
                 res.json(updatedVote);
             })
