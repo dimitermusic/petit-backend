@@ -4,7 +4,7 @@ const { Place, Vote, Comment, Reaction } = require('../../models');
 
 // find all the places that exist within our database
 router.get('/', (req, res) => {
-  Place.findAll({include:[Comment]})
+  Place.findAll({include:[Comment, Vote]})
     .then(placeData => {
       res.json(placeData);
     })
@@ -31,21 +31,10 @@ router.post("/:ref_id", tokenAuth, (req, res) => {
         ref_id: req.params.ref_id,
         location: req.body.location
       }).then(newPlace => {
-        Vote.create({
-            PlaceId: newPlace.id,
-            UserId: req.user.id            
-        }).then(voteData => {
-            console.log(voteData);
-            Place.findByPk(voteData.PlaceId, {include:[Comment,Vote]})
-            .then(myPlace=>{
-              res.json(myPlace)
-            })
-        }).catch(err=>{
-            console.log(err);
-            res.status(404).json('no vote created')
-        })
-      }).catch(err => {
-        console.log(err);
+          Place.findByPk(newPlace.id, {include:[Comment,Vote]})
+          res.json(newPlace)
+      }).catch(err=>{
+          console.log(err);
       })
     } else {
       res.json(placeData);
