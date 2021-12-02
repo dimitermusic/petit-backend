@@ -18,14 +18,13 @@ router.get("/", (req, res) => {
 });
 
 // allows user to signup, but currently must still login
-// TODO: make it so that signup also logs user in 
 router.post("/signup", (req, res) => {
   User.create({
     email: req.body.email,
     password: req.body.password,
     username: req.body.username,
-    // favoritePet: req.body.favoritePet,
-    // petPic: req.body.petPic
+    favoritePet: req.body.favoritePet,
+    petPic: req.body.petPic
   })
     .then(newUser => {
       res.json(newUser);
@@ -118,7 +117,7 @@ router.delete("/:id", tokenAuth, (req, res) => {
 
 // get user's profile info
 router.get("/profile", tokenAuth, (req, res) => {
-  User.findByPk(req.user.id, {})
+  User.findByPk(req.user.id, {include:[Vote]})
     .then(foundUser => {
       res.json(foundUser)
     })

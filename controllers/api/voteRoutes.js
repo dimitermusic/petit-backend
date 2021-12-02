@@ -25,6 +25,8 @@ router.post("/", tokenAuth, (req, res) => {
     .then(voteData => {
         if(!voteData){
             Vote.create({
+                UserId:req.user.id,
+                PlaceId:req.body.placeId,
                 hasStipendUp: req.body.hasStipendUp,
                 hasStipendDown: req.body.hasStipendDown,
                 canBringUp: req.body.canBringUp,
