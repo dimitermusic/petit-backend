@@ -46,27 +46,27 @@ router.post("/:ref_id", tokenAuth, (req, res) => {
 });
 
 // FOR TESTING PURPOSES ONLY!! DELETE AFTER TESTING
-router.post("/", tokenAuth,(req,res) =>{
-    Place.create({
-        name: req.body.name,
-        isJob: req.body.isJob,
-        ref_id:req.body.ref_id,
-        location:req.body.location
-    }).then(myPlace => {
-        res.json(myPlace)
-        Vote.create({
-            PlaceId: myPlace.id,
-            UserId: req.user.id            
-        }).then(voteData => {
-            res.json(voteData)
-        }).catch(err=>{
-            console.log(err);
-            res.status(404).json('no vote created')
-        })
-    }).catch(err => {
-        console.log(err);
-        res.status(403).json("bad request")
-    })
-})
+// router.post("/", tokenAuth,(req,res) =>{
+//     Place.create({
+//         name: req.body.name,
+//         isJob: req.body.isJob,
+//         ref_id:req.body.ref_id,
+//         location:req.body.location
+//     }).then(myPlace => {
+//         res.json(myPlace)
+//         Vote.create({
+//             PlaceId: myPlace.id,
+//             UserId: req.user.id            
+//         }).then(voteData => {
+//             res.json(voteData)
+//         }).catch(err=>{
+//             console.log(err);
+//             res.status(404).json('no vote created')
+//         })
+//     }).catch(err => {
+//         console.log(err);
+//         res.status(403).json("bad request")
+//     })
+// })
 
 module.exports = router;

@@ -3,9 +3,8 @@ const router = express.Router();
 const tokenAuth = require("../../middleware/tokenAuth")
 const { Vote, Place, User } = require("../../models");
 
-// delete after testing
-router.get("/", (req, res) => {
-    Vote.findAll()
+router.get("/", tokenAuth, (req, res) => {
+    Vote.findAll({where:{UserId:req.user.id}})
         .then(userData => {
             res.json(userData);
         })
@@ -16,7 +15,7 @@ router.get("/", (req, res) => {
 });
 
 // user will be able to vote via this route
-router.put("/:id", tokenAuth, (req, res) => {
+router.post("/", tokenAuth, (req, res) => {
     Vote.findOne({
         where:{
             UserId:req.user.id,
