@@ -21,7 +21,7 @@ router.post("/:ref_id", tokenAuth, (req, res) => {
       ref_id: req.params.ref_id,
       isJob: req.body.isJob
     },
-    include: [Comment]
+    include: [Comment, Vote]
   })
   .then(placeData => {
     if (!placeData) {
@@ -35,7 +35,11 @@ router.post("/:ref_id", tokenAuth, (req, res) => {
             PlaceId: newPlace.id,
             UserId: req.user.id            
         }).then(voteData => {
-            res.json(voteData)
+            console.log(voteData);
+            Place.findByPk(voteData.PlaceId, {include:[Comment,Vote]})
+            .then(myPlace=>{
+              res.json(myPlace)
+            })
         }).catch(err=>{
             console.log(err);
             res.status(404).json('no vote created')
