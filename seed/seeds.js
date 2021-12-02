@@ -167,6 +167,30 @@ const seed = async () =>{
         },
         {
             UserId:2,
+            PlaceId:3,
+            hasStipendUp:true,
+            hasStipendDown:false,
+            canBringUp:true,
+            canBringDown:false,
+            hasMenuUp:true,
+            hasMenuDown:false,
+            petTimeOffUp:false,
+            petTimeOffDown:true
+        },
+        {
+            UserId:3,
+            PlaceId:3,
+            hasStipendUp:true,
+            hasStipendDown:false,
+            canBringUp:true,
+            canBringDown:false,
+            hasMenuUp:true,
+            hasMenuDown:false,
+            petTimeOffUp:false,
+            petTimeOffDown:true
+        },
+        {
+            UserId:2,
             PlaceId:1,
             hasStipendUp:true,
             hasStipendDown:false,
