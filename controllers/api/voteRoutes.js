@@ -25,7 +25,7 @@ router.post("/", tokenAuth, (req, res) => {
     .then(voteData => {
         if(!voteData){
             Vote.create({
-                asStipendUp: req.body.hasStipendUp,
+                hasStipendUp: req.body.hasStipendUp,
                 hasStipendDown: req.body.hasStipendDown,
                 canBringUp: req.body.canBringUp,
                 canBringDown: req.body.canBringDown,
@@ -39,23 +39,16 @@ router.post("/", tokenAuth, (req, res) => {
                 console.log(err);
             })
         }else{
-            Vote.update(
-                {
-                    hasStipendUp: req.body.hasStipendUp,
-                    hasStipendDown: req.body.hasStipendDown,
-                    canBringUp: req.body.canBringUp,
-                    canBringDown: req.body.canBringDown,
-                    hasMenuUp: req.body.hasMenuUp,
-                    hasMenuDown: req.body.hasMenuDown,
-                    petTimeOffUp: req.body.petTimeOffUp,
-                    petTimeOffDown: req.body.petTimeOffDown
-                },
-                {
-                    where: {
-                        id: req.params.id
-                    }
-                }
-            )
+            Vote.update({
+                hasStipendUp: req.body.hasStipendUp,
+                hasStipendDown: req.body.hasStipendDown,
+                canBringUp: req.body.canBringUp,
+                canBringDown: req.body.canBringDown,
+                hasMenuUp: req.body.hasMenuUp,
+                hasMenuDown: req.body.hasMenuDown,
+                petTimeOffUp: req.body.petTimeOffUp,
+                petTimeOffDown: req.body.petTimeOffDown
+            })
             .then(updatedVote => {
                 res.json(updatedVote);
             })
