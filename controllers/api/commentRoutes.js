@@ -29,6 +29,8 @@ router.get("/:placeId", (req,res)=>{
   })
 })
 
+// YOU ARE AMAZING
+
 // post a comment on a specific place 
 router.post("/", tokenAuth, (req, res) => {
   Comment.create({
