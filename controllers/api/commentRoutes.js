@@ -15,12 +15,14 @@ const { Comment, User, Reaction, Place } = require("../../models");
 //     });
 // });
 
-router.get("/", (req,res)=>{
+router.get("/:placeId", (req,res)=>{
   Comment.findAll({
     where:{
-      PlaceId:req.body.id
-    }
-  }).then(commentData => {
+      PlaceId:req.params.placeId
+    },
+    include:[User]
+  })
+  .then(commentData => {
     res.json(commentData)
   }).catch(err=>{
     console.log(err);
