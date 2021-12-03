@@ -2,7 +2,7 @@ const express = require("express");
 const { route } = require(".");
 const router = express.Router();
 const tokenAuth = require("../../middleware/tokenAuth")
-const { Vote } = require("../../models");
+const { Vote, Place } = require("../../models");
 
 router.get("/", tokenAuth, (req, res) => {
     Vote.findAll({where:{UserId:req.user.id}})
@@ -36,7 +36,14 @@ router.put("/", tokenAuth, (req, res) => {
         }
     )
     .then(updatedVote => {
-        res.json(updatedVote);
+        Place.findByPk(req.body.placeId,{include:[Vote]})
+        .then(newPlace=>{
+            res.json(newPlace)
+        })
+        .catch(err=>{
+            console.log(err);
+            res.status(404).json('oh nooooo place')
+        })
     })
     .catch(err => {
         console.log(err);
