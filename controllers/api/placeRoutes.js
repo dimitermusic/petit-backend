@@ -38,7 +38,9 @@ router.post("/:ref_id", tokenAuth, (req, res) => {
             }
           }).then(voteData =>{
             Place.findByPk(newPlace.id, {include:[Comment,Vote]})
-            res.json(newPlace)
+            .then(myPlace => {
+              res.json(myPlace)
+            })
           })
       }).catch(err=>{
           console.log(err);
