@@ -18,7 +18,7 @@ router.get("/", (req, res) => {
 router.get("/:id", (req,res)=>{
   Comment.findAll({
     where:{
-      UserId:req.params.id
+      PlaceId:req.params.id
     }
   }).then(commentData => {
     res.json(commentData)
@@ -28,11 +28,11 @@ router.get("/:id", (req,res)=>{
 })
 
 // post a comment on a specific place 
-router.post("/place/:id", tokenAuth, (req, res) => {
+router.post("/", tokenAuth, (req, res) => {
   Comment.create({
     comment: req.body.comment,
     UserId: req.user.id,
-    PlaceId: req.params.id
+    PlaceId: req.body.id
   }).then(newComment => {
       res.json(newComment);
     })

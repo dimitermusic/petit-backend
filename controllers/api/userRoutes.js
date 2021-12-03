@@ -70,7 +70,7 @@ router.post('/login', (req, res) => {
 });
 
 // allows user to change personal settings
-router.put("/:id", tokenAuth, (req, res) => {
+router.put("/", tokenAuth, (req, res) => {
   User.update(
     {
       email: req.body.email,
@@ -82,7 +82,7 @@ router.put("/:id", tokenAuth, (req, res) => {
     },
     {
       where: {
-        id: req.params.id
+        id: req.user.id
       }
     }
   )
@@ -96,10 +96,10 @@ router.put("/:id", tokenAuth, (req, res) => {
 });
 
 // delete user's account
-router.delete("/:id", tokenAuth, (req, res) => {
+router.delete("/", tokenAuth, (req, res) => {
     User.destroy({
       where: {
-        id: req.params.id
+        id: req.user.id
       }
     })
       .then(delUser => {

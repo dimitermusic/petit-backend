@@ -31,8 +31,24 @@ router.post("/:ref_id", tokenAuth, (req, res) => {
         ref_id: req.params.ref_id,
         location: req.body.location
       }).then(newPlace => {
-          Place.findByPk(newPlace.id, {include:[Comment,Vote]})
-          res.json(newPlace)
+          Vote.create({
+            UserId:req.user.id,
+            PlaceId:newPlace.id
+          })
+          .then(voteData =>{
+            Place.findByPk(newPlace.id, {
+              include:[Comment,Vote]
+            })
+            .then(myPlace => {
+              res.json(myPlace)
+            })
+            .catch(err=>{
+              console.log(err);
+            })
+          })
+          .catch(err=>{
+            console.log(err);
+          })
       }).catch(err=>{
           console.log(err);
       })
