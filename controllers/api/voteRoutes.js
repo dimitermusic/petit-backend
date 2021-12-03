@@ -1,4 +1,5 @@
 const express = require("express");
+const { route } = require(".");
 const router = express.Router();
 const tokenAuth = require("../../middleware/tokenAuth")
 const { Vote } = require("../../models");
