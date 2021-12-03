@@ -32,7 +32,7 @@ router.post("/", tokenAuth, (req, res) => {
   Comment.create({
     comment: req.body.comment,
     UserId: req.user.id,
-    PlaceId: req.body.id
+    PlaceId: req.body.placeId
   }).then(newComment => {
       res.json(newComment);
     })
