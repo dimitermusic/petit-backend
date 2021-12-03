@@ -54,17 +54,42 @@ router.post("/:ref_id", tokenAuth, (req, res) => {
           console.log(err);
       })
     } else {
-      Vote.create({
-        UserId:req.user.id,
-        PlaceId:placeData.id
+      Vote.findOne({
+        where:{
+          UserId:req.user.id,
+          PlaceId:placeData.id
+        }
       })
-      .then(anotherVote=>{
-        Place.findByPk(placeData.id,{
-          include:[Comment,Vote]
-        })
-        .then(finalPlace=>{
-          res.json(finalPlace)
-        })
+      .then(votes=>{
+        if(!votes){
+          Vote.create({
+            UserId:req.user.id,
+            PlaceId:placeData.id
+          })
+          .then(myVote=>{
+            Place.findByPk(placeData.id,{
+              include:[Comment,Vote]
+            })
+            .then(mePlace=>{
+              res.json(mePlace)
+            })
+            .catch(err=>{
+              res.status(404).json('no me place!')
+            })
+          })
+          .catch(err=>{
+            res.status(404).json('no votes here!')
+          })
+        }else{
+          Place.findByPk(placeData.id,{include:[Comment,Vote]})
+          .then(final=>{
+            res.json(final)
+          })
+          .catch(err=>{
+            console.log(err);
+            res.status(500).json('no place found!')
+          })
+        }
       })
       .catch(err=>{
         res.status(404).json("oh no!")
