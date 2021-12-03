@@ -89,7 +89,9 @@ const seed = async () =>{
             password:'password',
             favoritePet:'dog'
         }
-    ])
+    ],{
+        individualHooks:true
+    })
     const commentData = await Comment.bulkCreate([
         {
             UserId:1,
