@@ -4,21 +4,21 @@ const tokenAuth = require("../../middleware/tokenAuth")
 const { Comment, User, Reaction, Place } = require("../../models");
 
 // delete this route after testing
-router.get("/", (req, res) => {
-  Comment.findAll({include:[User,Reaction,Place]})
-    .then(userData => {
-      res.json(userData);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({ err });
-    });
-});
+// router.get("/", (req, res) => {
+//   Comment.findAll({include:[User,Reaction,Place]})
+//     .then(userData => {
+//       res.json(userData);
+//     })
+//     .catch(err => {
+//       console.log(err);
+//       res.status(500).json({ err });
+//     });
+// });
 
-router.get("/:id", (req,res)=>{
+router.get("/", (req,res)=>{
   Comment.findAll({
     where:{
-      PlaceId:req.params.id
+      PlaceId:req.body.id
     }
   }).then(commentData => {
     res.json(commentData)
