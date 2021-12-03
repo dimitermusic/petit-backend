@@ -31,6 +31,7 @@ router.post("/:ref_id", tokenAuth, (req, res) => {
         ref_id: req.params.ref_id,
         location: req.body.location
       }).then(newPlace => {
+          console.log(newPlace);
           Vote.create({
             UserId:req.user.id,
             PlaceId:newPlace.id
@@ -53,7 +54,21 @@ router.post("/:ref_id", tokenAuth, (req, res) => {
           console.log(err);
       })
     } else {
-      res.json(placeData);
+      Vote.create({
+        UserId:req.user.id,
+        PlaceId:placeData.id
+      })
+      .then(anotherVote=>{
+        Place.findByPk(placeData.id,{
+          include:[Comment,Vote]
+        })
+        .then(finalPlace=>{
+          res.json(finalPlace)
+        })
+      })
+      .catch(err=>{
+        res.status(404).json("oh no!")
+      })
     };
   }).catch(err => {
     res.status(404).json('unable to get info');
@@ -61,28 +76,5 @@ router.post("/:ref_id", tokenAuth, (req, res) => {
   })
 });
 
-// FOR TESTING PURPOSES ONLY!! DELETE AFTER TESTING
-// router.post("/", tokenAuth,(req,res) =>{
-//     Place.create({
-//         name: req.body.name,
-//         isJob: req.body.isJob,
-//         ref_id:req.body.ref_id,
-//         location:req.body.location
-//     }).then(myPlace => {
-//         res.json(myPlace)
-//         Vote.create({
-//             PlaceId: myPlace.id,
-//             UserId: req.user.id            
-//         }).then(voteData => {
-//             res.json(voteData)
-//         }).catch(err=>{
-//             console.log(err);
-//             res.status(404).json('no vote created')
-//         })
-//     }).catch(err => {
-//         console.log(err);
-//         res.status(403).json("bad request")
-//     })
-// })
 
 module.exports = router;
