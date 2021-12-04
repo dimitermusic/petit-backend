@@ -5,7 +5,7 @@ class Comment extends Model { }
 
 Comment.init({
     comment: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(1234),
         validate: {
             max: 255
         },
