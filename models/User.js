@@ -14,7 +14,7 @@ User.init({
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            min: 8
+            len:[8,16]
         }
     },
     email: {
