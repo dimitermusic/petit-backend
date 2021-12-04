@@ -40,7 +40,8 @@ router.post('/login', (req, res) => {
   User.findOne({
     where: {
       username: req.body.username
-    }
+    },
+    include:[Vote]
   }).then(foundUser => {
     if (!foundUser) {
       return res.status(401).send("incorrect email or password")
@@ -117,7 +118,9 @@ router.delete("/", tokenAuth, (req, res) => {
 
 // get user's profile info
 router.get("/profile", tokenAuth, (req, res) => {
-  User.findByPk(req.user.id, {include:[Vote]})
+  User.findByPk(req.user.id, {
+    include:[Vote]
+  })
     .then(foundUser => {
       res.json(foundUser)
     })
