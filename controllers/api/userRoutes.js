@@ -18,14 +18,13 @@ router.get("/", (req, res) => {
 });
 
 // allows user to signup, but currently must still login
-// TODO: make it so that signup also logs user in 
 router.post("/signup", (req, res) => {
   User.create({
     email: req.body.email,
     password: req.body.password,
     username: req.body.username,
-    // favoritePet: req.body.favoritePet,
-    // petPic: req.body.petPic
+    favoritePet: req.body.favoritePet,
+    petPic: req.body.petPic
   })
     .then(newUser => {
       res.json(newUser);
@@ -41,7 +40,8 @@ router.post('/login', (req, res) => {
   User.findOne({
     where: {
       username: req.body.username
-    }
+    },
+    include:[Vote]
   }).then(foundUser => {
     if (!foundUser) {
       return res.status(401).send("incorrect email or password")
@@ -61,7 +61,7 @@ router.post('/login', (req, res) => {
       });
     }
     else {
-      res.status(401).send("incorrect email or password")
+      res.status(401).send("incorrect username or password")
     }
   })
     .catch(err => {
@@ -71,7 +71,7 @@ router.post('/login', (req, res) => {
 });
 
 // allows user to change personal settings
-router.put("/:id", tokenAuth, (req, res) => {
+router.put("/", tokenAuth, (req, res) => {
   User.update(
     {
       email: req.body.email,
@@ -83,7 +83,7 @@ router.put("/:id", tokenAuth, (req, res) => {
     },
     {
       where: {
-        id: req.params.id
+        id: req.user.id
       }
     }
   )
@@ -97,10 +97,10 @@ router.put("/:id", tokenAuth, (req, res) => {
 });
 
 // delete user's account
-router.delete("/:id", tokenAuth, (req, res) => {
+router.delete("/", tokenAuth, (req, res) => {
     User.destroy({
       where: {
-        id: req.params.id
+        id: req.user.id
       }
     })
       .then(delUser => {
@@ -118,7 +118,9 @@ router.delete("/:id", tokenAuth, (req, res) => {
 
 // get user's profile info
 router.get("/profile", tokenAuth, (req, res) => {
-  User.findByPk(req.user.id, {})
+  User.findByPk(req.user.id, {
+    include:[Vote]
+  })
     .then(foundUser => {
       res.json(foundUser)
     })

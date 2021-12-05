@@ -4,35 +4,39 @@ const tokenAuth = require("../../middleware/tokenAuth")
 const { Comment, User, Reaction, Place } = require("../../models");
 
 // delete this route after testing
-router.get("/", (req, res) => {
-  Comment.findAll({include:[User,Reaction,Place]})
-    .then(userData => {
-      res.json(userData);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({ err });
-    });
-});
+// router.get("/", (req, res) => {
+//   Comment.findAll({include:[User,Reaction,Place]})
+//     .then(userData => {
+//       res.json(userData);
+//     })
+//     .catch(err => {
+//       console.log(err);
+//       res.status(500).json({ err });
+//     });
+// });
 
-router.get("/:id", (req,res)=>{
+router.get("/:placeId", (req,res)=>{
   Comment.findAll({
     where:{
-      UserId:req.params.id
-    }
-  }).then(commentData => {
+      PlaceId:req.params.placeId
+    },
+    include:[User]
+  })
+  .then(commentData => {
     res.json(commentData)
   }).catch(err=>{
     console.log(err);
   })
 })
 
+// YOU ARE AMAZING
+
 // post a comment on a specific place 
-router.post("/place/:id", tokenAuth, (req, res) => {
+router.post("/", tokenAuth, (req, res) => {
   Comment.create({
     comment: req.body.comment,
     UserId: req.user.id,
-    PlaceId: req.params.id
+    PlaceId: req.body.placeId
   }).then(newComment => {
       res.json(newComment);
     })

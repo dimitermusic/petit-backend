@@ -1,10 +1,22 @@
 const express = require("express");
+const { route } = require(".");
 const router = express.Router();
 const tokenAuth = require("../../middleware/tokenAuth")
-const { Vote, Place, User } = require("../../models");
+const { Vote, Place } = require("../../models");
 
-// delete after testing
-router.get("/", (req, res) => {
+router.get("/", tokenAuth, (req, res) => {
+    Vote.findAll({where:{UserId:req.user.id}})
+        .then(userData => {
+            res.json(userData);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ err });
+        });
+});
+
+// FOR DEVELOPMENT ONLY
+router.get("/test", (req, res) => {
     Vote.findAll()
         .then(userData => {
             res.json(userData);
@@ -15,31 +27,8 @@ router.get("/", (req, res) => {
         });
 });
 
-// router.post("/", (req, res) => {
-//     Vote.create({
-//         hasStipendUp: req.body.hasStipendUp,
-//         hasStipendDown: req.body.hasStipendDown,
-//         canBringUp: req.body.canBringUp,
-//         canBringDown: req.body.canBringDown,
-//         hasMenuUp: req.body.hasMenuUp,
-//         hasMenuDown: req.body.hasMenuDown,
-//         petTimeOffUp: req.body.petTimeOffUp,
-//         petTimeOffDown: req.body.petTimeOffDown
-//     },
-//         {
-//             include: [Place, User]
-//         })
-//         .then(newUser => {
-//             res.json(newUser);
-//         })
-//         .catch(err => {
-//             console.log(err);
-//             res.status(500).json({ err });
-//         });
-// });
-
 // user will be able to vote via this route
-router.put("/:id", tokenAuth, (req, res) => {
+router.put("/", tokenAuth, (req, res) => {
     Vote.update(
         {
             hasStipendUp: req.body.hasStipendUp,
@@ -52,42 +41,27 @@ router.put("/:id", tokenAuth, (req, res) => {
             petTimeOffDown: req.body.petTimeOffDown
         },
         {
-            include: [Place, User],
-            where: {
-                id: req.params.id
+            where:{
+                UserId:req.user.id,
+                PlaceId:req.body.placeId
             }
+        }
+    )
+    .then(updatedVote => {
+        Place.findByPk(req.body.placeId,{include:[Vote]})
+        .then(newPlace=>{
+            res.json(newPlace)
         })
-        .then(updatedVote => {
-            res.json(updatedVote);
-        })
-        .catch(err => {
+        .catch(err=>{
             console.log(err);
-            res.status(500).json({ err: err });
-        });
+            res.status(404).json('oh nooooo place')
+        })
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({ err: err });
+    });
 });
 
-// router.delete("/:id", (req, res) => {
-//     Vote.findByPk(req.params.id).then(() => {
-//         Vote.destroy({
-//             where: {
-//                 id: req.params.id
-//             }
-//         })
-//             .then(delUser => {
-//                 if (delUser) {
-//                     res.json(delUser);
-//                 } else {
-//                     res.status(404).json({ err: "no such vote found!" });
-//                 }
-//             })
-//             .catch(err => {
-//                 console.log(err);
-//                 res.status(500).json({ err });
-//             });
-//     }).catch(err => {
-//         console.log(err);
-//         res.status(500).json({ err });
-//     });;
-// });
 
 module.exports = router;
