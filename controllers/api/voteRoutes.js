@@ -15,6 +15,42 @@ router.get("/", tokenAuth, (req, res) => {
         });
 });
 
+router.post("/",tokenAuth,(req,res)=>{
+    Vote.findOne({
+        where:{
+            UserId:req.user.id,
+            PlaceId:req.body.placeId
+        }
+    })
+    .then(votes=>{
+        if(!votes){
+            Vote.create({
+              UserId:req.user.id,
+              PlaceId:req.body.placeId
+            })
+            .then(myVote=>{
+              Place.findByPk(req.body.placeId,{
+                include:[Comment,Vote]
+              })
+              .then(mePlace=>{
+                res.json(mePlace)
+              })
+              .catch(err=>{
+                res.status(404).json('no me place!')
+              })
+            })
+            .catch(err=>{
+              res.status(404).json('no votes here!')
+            })
+        }else{
+            res.json(votes)
+        };
+    }).catch(err => {
+        res.status(404).json('unable to get vote');
+        console.log(err);
+    })
+})
+
 // user will be able to vote via this route
 router.put("/", tokenAuth, (req, res) => {
     Vote.update(
