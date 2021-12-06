@@ -1,19 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const tokenAuth = require("../../middleware/tokenAuth")
-const { Comment, User, Reaction, Place } = require("../../models");
-
-// delete this route after testing
-// router.get("/", (req, res) => {
-//   Comment.findAll({include:[User,Reaction,Place]})
-//     .then(userData => {
-//       res.json(userData);
-//     })
-//     .catch(err => {
-//       console.log(err);
-//       res.status(500).json({ err });
-//     });
-// });
+const { Comment, User } = require("../../models");
 
 router.get("/:placeId", (req,res)=>{
   Comment.findAll({

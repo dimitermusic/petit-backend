@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const tokenAuth = require("../../middleware/tokenAuth");
 const axios = require("axios");
 
 router.post("/", (req, res) => {
