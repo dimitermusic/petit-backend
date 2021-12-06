@@ -15,18 +15,6 @@ router.get("/", tokenAuth, (req, res) => {
         });
 });
 
-// FOR DEVELOPMENT ONLY
-router.get("/test", (req, res) => {
-    Vote.findAll()
-        .then(userData => {
-            res.json(userData);
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({ err });
-        });
-});
-
 // user will be able to vote via this route
 router.put("/", tokenAuth, (req, res) => {
     Vote.update(
