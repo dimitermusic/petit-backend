@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken")
 const tokenAuth = require("../../middleware/tokenAuth")
-const { User, Reaction, Vote, Place } = require("../../models");
+const { User, Vote } = require("../../models");
 
 // probably get rid of this route after testing
 router.get("/", (req, res) => {

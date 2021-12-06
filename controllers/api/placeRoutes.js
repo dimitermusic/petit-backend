@@ -14,13 +14,6 @@ router.get('/', (req, res) => {
     })
 });
 
-// FOR DEVELOPMENT ONLY TEST GET ROUTE
-router.get('/:id',(req,res)=>{
-  Place.findAll({where:{id:req.params.id}})
-  .then(data=>{
-    res.json(data)
-  })
-})
 
 // get info for one specific place based on the ref_id from Google API. Will either create new entry or return back with info already in database depending
 router.post("/:ref_id", tokenAuth, (req, res) => {
